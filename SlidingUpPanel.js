@@ -371,12 +371,12 @@ class SlidingUpPanel extends React.PureComponent {
     const animatedValue = this.props.animatedValue.__getValue()
     const remainingDistance = animatedValue - options.toValue
     const velocity = options.velocity || remainingDistance / Constants.TIME_CONSTANT // prettier-ignore
-
+    const friction = options.velocity || this.props.friction;
     this._flick.start({
       velocity,
       toValue: options.toValue,
       fromValue: animatedValue,
-      friction: this.props.friction
+      friction,
     })
   }
 
@@ -467,9 +467,15 @@ class SlidingUpPanel extends React.PureComponent {
     return this._triggerAnimation({toValue: mayBeValueOrOptions})
   }
 
-  hide() {
-    const {bottom} = this.props.draggableRange
-    this._triggerAnimation({toValue: bottom})
+  hide(mayBeValueOrOptions) {
+    if (!mayBeValueOrOptions) {
+      const {bottom} = this.props.draggableRange
+      return this._triggerAnimation({toValue: bottom})
+    }
+    if (typeof mayBeValueOrOptions === 'object') {
+      return this._triggerAnimation(mayBeValueOrOptions)
+    }
+    return this._triggerAnimation({toValue: mayBeValueOrOptions})
   }
 
   async scrollIntoView(node, options = {}) {
