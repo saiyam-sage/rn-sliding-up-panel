@@ -214,8 +214,7 @@ class SlidingUpPanel extends React.PureComponent {
   // Trigger when you release your finger
   _onPanResponderRelease(evt, gestureState) {
     const animatedValue = this.props.animatedValue.__getValue()
-
-
+    
     if (!this._isInsideDraggableRange(animatedValue, gestureState)) {
       return
     }
@@ -350,12 +349,11 @@ class SlidingUpPanel extends React.PureComponent {
 
   _isInsideDraggableRange(value, gestureState) {
     const {top, bottom} = this.props.draggableRange
-
-
     if (gestureState.dy > 0) {
+      
       return value >= bottom
     }
-    return value < top
+    return value <= top
   }
 
   _isAtBottom(value) {
